@@ -15,15 +15,12 @@ if 'past' not in st.session_state:
     st.session_state['past'] = []
 
 
-import boto3 
-
-
 
 
 
 def query(payload):
     region = 'us-west-2'
-    runtime = boto3.client('runtime.sagemaker', region_name=region)
+    runtime = boto3.client('runtime.sagemaker', region_name=region, use_ssl=False)
     response = runtime.invoke_endpoint(
         EndpointName=endpoint_name,
         ContentType='application/json',

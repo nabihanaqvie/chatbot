@@ -1,0 +1,4 @@
+streamlit==1.15.2
+boto3==1.26.41
+requests==2.28.1
+json==2.0.9

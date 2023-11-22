@@ -16,11 +16,17 @@ if 'past' not in st.session_state:
     st.session_state['past'] = []
 
 
+session = boto3.Session(
+    aws_access_key_id=key,
+    aws_secret_access_key=secret,
+    region_name = 'us-west-2'
+)
+
+
 
 
 def query(payload):
-    region = 'us-west-2'
-    runtime = boto3.client('runtime.sagemaker', region_name=region)
+    runtime = session.client('runtime.sagemaker')
     response = runtime.invoke_endpoint(
         EndpointName=endpoint_name,
         ContentType='application/json',

@@ -21,7 +21,8 @@ secret  = os.environ.get('YyWDJ3F6AdJ7t6u6zJIxpejek7gjFKmsneXbl2fh')
 
 session = boto3.Session(
     aws_access_key_id=key,
-    aws_secret_access_key=secret
+    aws_secret_access_key=secret,
+    region_name = us-west-2
 )
 
 

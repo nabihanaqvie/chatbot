@@ -2,6 +2,7 @@ import streamlit as st
 import boto3
 import requests
 import json
+import os
 
 
 endpoint_name = "huggingface-pytorch-tgi-inference-2023-11-21-00-38-12-570" 
@@ -15,12 +16,19 @@ if 'past' not in st.session_state:
     st.session_state['past'] = []
 
 
+key = os.environ.get('AKIAZYGLDFPB2ZPAUR55')
+secret  = os.environ.get('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')
+
+session = boto3.Session(
+    aws_access_key_id=key,
+    aws_secret_access_key=secret
+)
+
 
 
 
 def query(payload):
-    region = 'us-west-2'
-    runtime = boto3.client('runtime.sagemaker', region_name=region, use_ssl=False)
+    runtime = session.client('runtime.sagemaker')
     response = runtime.invoke_endpoint(
         EndpointName=endpoint_name,
         ContentType='application/json',

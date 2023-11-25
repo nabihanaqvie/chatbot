@@ -3,9 +3,54 @@ import boto3
 import requests
 import json
 import os
-
+from typing import List
+from sentence_transformers import SentenceTransformer
+import torch
+import numpy as np
+import pinecone
+from datasets import load_dataset
+import pandas as pd
 
 endpoint_name = "huggingface-pytorch-tgi-inference-2023-11-21-00-38-12-570" 
+
+# Import the dataset to get the character names/bios
+npc_train = load_dataset("amaydle/npc-dialogue", split="train")
+npc_test = load_dataset("amaydle/npc-dialogue", split="test")
+
+# Automatically splits it into train and test for you - let's ignore that for now and just combine them as one
+
+# First, transform them into pandas DFs
+train = pd.DataFrame(data = {'name': npc_train['Name'], 'bio':npc_train['Biography'], 'query':npc_train['Query'], 'response':npc_train['Response'], 'emotion':npc_train['Emotion']})
+test = pd.DataFrame(data = {'name': npc_test['Name'], 'bio':npc_test['Biography'], 'query':npc_test['Query'], 'response':npc_test['Response'], 'emotion':npc_test['Emotion']})
+
+# Now combine into a single df
+npc = pd.concat([train, test])
+
+# Create a character-level dataset, since the characters show up multiple times in the dataset
+character_level_dataset = npc[['name', 'bio']]
+character_level_dataset.drop_duplicates(inplace=True)
+
+# Get a list of just the names
+character_names = list(pd.unique(character_level_dataset['name']))
+
+# Set up the sentence encoder for RAG
+rag_encoder = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+
+# Function to encode the input for retrieval
+def embed_docs(docs: List[str]) -> List[List[float]]:
+    out = rag_encoder.encode(docs)
+    return out.tolist()
+
+# Connect to pinecone DB
+api_key = "828c0ba7-fbe7-4f81-bd61-5b9c8ae0912a"
+# set Pinecone environment - find next to API key in console
+env = "gcp-starter"
+pinecone.init(
+    api_key=api_key,
+    environment=env
+)
+index_name='npc-rag'
+index = pinecone.Index(index_name)
 
 
 col1, col2 = st.columns([1, 5])
@@ -17,7 +62,11 @@ with col1:
 with col2:
     st.title("Team NPC")
     character = st.selectbox("Choose a character", 
-                         ["Elsa", "Indiana Jones", "Naruto Uzumaki", "Hermione Granger", "Sailor Moon", "Bugs Bunny"])
+                         character_names)
+                         
+                         
+# Once the character is selected, get the bio
+bio = list(character_level_dataset[character_level_dataset['name'] == character]['bio'])[0]
 
 if 'generated' not in st.session_state: 
     st.session_state['generated'] = []
@@ -59,7 +108,17 @@ if 'input' not in st.session_state:
 
 prompt = st.text_input("You: ", st.session_state['input'], key='input')
 
+# Retrieve the answer from pinecone db
+query_vec = embed_docs(prompt)
+
+# get the answer using RAG
+res = index.query(query_vec, top_k=5, include_metadata=True)
+res = res['matches']
+res = [x['metadata']['text'] for x in res if x['score'] > 0.5]
+res = ' '.join(res)
+
 if prompt:
+    prompt = bio + ' ' + res + ' ' + prompt
     output = generate_response(prompt)
     st.session_state.past.append(st.session_state.input)
     st.session_state.generated.append(output)
@@ -68,3 +127,4 @@ if st.session_state['generated']:
     for i in range(len(st.session_state['generated'])-1, -1, -1):
         message = st.session_state['generated'][i] 
         st.write("NPC:", message)
+

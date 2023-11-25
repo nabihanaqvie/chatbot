@@ -1,3 +1,10 @@
 streamlit==1.15.2
 boto3==1.26.41
 requests==2.28.1
+typing==3.7.4.3
+sentence-transformers==2.2.2
+torch==1.14.0.dev20221203
+numpy==1.21.5
+pinecone-client==2.2.1
+datasets==2.15.0
+pandas==1.4.3

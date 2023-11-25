@@ -7,8 +7,15 @@ import os
 
 endpoint_name = "huggingface-pytorch-tgi-inference-2023-11-21-00-38-12-570" 
 
-st.title("Team NPC")
-character = st.selectbox("Choose a character", 
+# Display GIF on the left with width set
+gif_url = "https://tenor.com/view/blink-gif-18252006991683866454" 
+col1, col2 = st.columns([1, 5])
+with col1:
+    st.image(gif_url, width=200)
+
+with col2:
+    st.title("Team NPC")
+    character = st.selectbox("Choose a character", 
                          ["Elsa", "Indiana Jones", "Naruto Uzumaki", "Hermione Granger", "Sailor Moon", "Bugs Bunny"])
 
 if 'generated' not in st.session_state: 

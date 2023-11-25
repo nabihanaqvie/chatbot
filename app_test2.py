@@ -10,7 +10,9 @@ endpoint_name = "huggingface-pytorch-tgi-inference-2023-11-21-00-38-12-570"
 
 col1, col2 = st.columns([1, 5])
 with col1:
-    st.markdown("![Alt Text](https://media3.giphy.com/media/lTFoYdCiKbt0XU2ofv/giphy.gif?cid=ecf05e47lsz40qrvnurhflj7fsr4kxmniroulsxldscm21q5&ep=v1_gifs_related&rid=giphy.gif&ct=g)")
+    st.markdown("""
+        <img src="https://media3.giphy.com/media/lTFoYdCiKbt0XU2ofv/giphy.gif?cid=ecf05e47lsz40qrvnurhflj7fsr4kxmniroulsxldscm21q5&ep=v1_gifs_related&rid=giphy.gif&ct=g" width="100">
+    """, unsafe_allow_html=True)
 
 with col2:
     st.title("Team NPC")

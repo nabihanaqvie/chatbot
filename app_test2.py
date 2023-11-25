@@ -7,11 +7,10 @@ import os
 
 endpoint_name = "huggingface-pytorch-tgi-inference-2023-11-21-00-38-12-570" 
 
-# Display GIF on the left with width set
-gif_url = "https://tenor.com/view/blink-gif-18252006991683866454" 
+
 col1, col2 = st.columns([1, 5])
 with col1:
-    st.image(gif_url, width=200)
+    st.markdown("![Alt Text](https://giphy.com/gifs/Hemisferioderecho-hermes-ia-soldai-jVflkGtOAL0qIrZ6nL)")
 
 with col2:
     st.title("Team NPC")

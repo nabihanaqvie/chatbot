@@ -15,7 +15,7 @@ endpoint_name = "huggingface-pytorch-tgi-inference-2023-11-21-00-38-12-570"
 st.sidebar.image("berkeley1.png", width=300)
 st.sidebar.markdown("""<div style="text-align:center;">""", unsafe_allow_html=True) 
 st.sidebar.title("W210 - Capstone")
-st.sidebar.markdown("""[Sarah Hoover](https://www.linkedin.com/in/sarah-hoover-08816bba/), [Nabiha Naqvie](https://www.linkedin.com/in/nabiha-naqvie-22765612a/), Bindu Thota, and [Dave Zack](https://www.linkedin.com/in/dave-zack/)""")
+st.sidebar.markdown("""[Sarah Hoover](https://www.linkedin.com/in/sarah-hoover-08816bba/), [Nabiha Naqvie](https://www.linkedin.com/in/nabiha-naqvie-22765612a/), [Bindu Thota](https://www.linkedin.com/in/bindu-thota/), and [Dave Zack](https://www.linkedin.com/in/dave-zack/)""")
 st.sidebar.markdown("""</div>""", unsafe_allow_html=True)
 
 st.sidebar.markdown("""---""")

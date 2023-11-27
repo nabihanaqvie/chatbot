@@ -27,7 +27,6 @@ st.sidebar.info("""
 
 st.sidebar.markdown("""---""")
 
-st.sidebar.markdown("""---""") 
 st.sidebar.header("Source Code")
 st.sidebar.markdown("""
     View the source code on [GitHub](https://github.com/nabihanaqvie/chatbot/blob/main/app_w210.py)  

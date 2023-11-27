@@ -12,7 +12,7 @@ from datasets import load_dataset
 import pandas as pd
 
 endpoint_name = "huggingface-pytorch-tgi-inference-2023-11-21-00-38-12-570" 
-st.sidebar.image("berkeley.png", width=600)
+st.sidebar.image("berkeley.png", width=400)
 st.sidebar.markdown("""<div style="text-align:center;">""", unsafe_allow_html=True) 
 st.sidebar.title("W210 - Capstone")
 st.sidebar.markdown("""[Sarah Hoover](https://www.linkedin.com/in/sarah-hoover-08816bba/), [Nabiha Naqvie](https://www.linkedin.com/in/nabiha-naqvie-22765612a/), Bindu Thota, and [Dave Zack](https://www.linkedin.com/in/dave-zack/)""")

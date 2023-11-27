@@ -18,6 +18,21 @@ st.sidebar.title("W210 - Capstone")
 st.sidebar.markdown("""[Sarah Hoover](https://www.linkedin.com/in/sarah-hoover-08816bba/), [Nabiha Naqvie](https://www.linkedin.com/in/nabiha-naqvie-22765612a/), Bindu Thota, and [Dave Zack](https://www.linkedin.com/in/dave-zack/)""")
 st.sidebar.markdown("""</div>""", unsafe_allow_html=True)
 
+st.sidebar.markdown("""---""")
+st.sidebar.header("About")
+st.sidebar.info("""
+    Insert Info
+
+""")
+
+st.sidebar.markdown("""---""")
+
+st.sidebar.markdown("""---""") 
+st.sidebar.header("Source Code")
+st.sidebar.markdown("""
+    View the source code on [GitHub](https://github.com/nabihanaqvie/chatbot/blob/main/app_w210.py)  
+""", unsafe_allow_html=True)
+st.sidebar.markdown("""---""")
 
 # Import the dataset to get the character names/bios
 npc_train = load_dataset("amaydle/npc-dialogue", split="train")

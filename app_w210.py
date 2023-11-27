@@ -12,8 +12,9 @@ from datasets import load_dataset
 import pandas as pd
 
 endpoint_name = "huggingface-pytorch-tgi-inference-2023-11-21-00-38-12-570" 
+st.sidebar.image("berkeley.png", width=120)
 st.sidebar.title("W210 - Capstone")
-st.sidebar.markdown("""Sarah Hoover, Nabiha Naqvie, Bindu Thota, and Dave Zack""")
+st.sidebar.markdown("""[Sarah Hoover](https://www.linkedin.com/in/sarah-hoover-08816bba/), [Nabiha Naqvie](https://www.linkedin.com/in/nabiha-naqvie-22765612a/), Bindu Thota, and [Dave Zack](https://www.linkedin.com/in/dave-zack/)""")
 # Import the dataset to get the character names/bios
 npc_train = load_dataset("amaydle/npc-dialogue", split="train")
 npc_test = load_dataset("amaydle/npc-dialogue", split="test")

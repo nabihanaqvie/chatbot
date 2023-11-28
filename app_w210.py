@@ -76,7 +76,7 @@ index = pinecone.Index(index_name)
 col1, col2 = st.columns([1, 5])
 with col1:
     st.markdown("""
-        <img src="https://media3.giphy.com/media/NyMaiJVuPmPKcYbbKd/giphy.gif?cid=ecf05e47ylrkuefw30q5dkog27cm8dlxbnhmj6c50usu21qb&ep=v1_stickers_search&rid=giphy.gif&ct=s" width="100">
+        <img src="https://media3.giphy.com/media/NyMaiJVuPmPKcYbbKd/giphy.gif?cid=ecf05e47ylrkuefw30q5dkog27cm8dlxbnhmj6c50usu21qb&ep=v1_stickers_search&rid=giphy.gif&ct=s" width="200" style="float:left;">
     """, unsafe_allow_html=True)
 
 with col2:

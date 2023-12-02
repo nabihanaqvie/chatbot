@@ -89,11 +89,11 @@ with col2:
 # Once the character is selected, get the bio
 bio = list(character_level_dataset[character_level_dataset['name'] == character]['bio'])[0]
 
-if 'generated' not in st.session_state: 
-    st.session_state['generated'] = []
-
-if 'past' not in st.session_state:
+if 'past' not in st.session_state: 
     st.session_state['past'] = []
+
+if 'responses' not in st.session_state:
+    st.session_state['responses'] = []
 
 key = os.environ.get('key')
 secret  = os.environ.get('secret')
@@ -154,7 +154,11 @@ if st.session_state['generated']:
 
 
 
-
+# Display chat history
+for i in range(len(st.session_state['responses'])-1, -1, -1):
+   msg = st.session_state['past'][i]
+   resp = st.session_state['responses'][i]
+   st.write(msg, resp)
 
 
 
@@ -165,7 +169,7 @@ if st.session_state['generated']:
 # prompt = st.text_input("You: ", st.session_state['input'], key='input')
 
 # Retrieve the answer from pinecone db
-query_vec = embed_docs(prompt)
+# query_vec = embed_docs(prompt)
 
 # get the answer using RAG
 # res = index.query(query_vec, top_k=5, include_metadata=True)

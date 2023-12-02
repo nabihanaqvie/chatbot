@@ -99,30 +99,6 @@ def get_text():
     input_text = st.text_input("You: ","Hello", key="input")
     return input_text 
 
-user_input = get_text()
-
-if user_input:
-    output = generate_response(user_input) 
-    st.session_state.past.append(user_input)
-    st.session_state.generated.append(output)
-
-if st.session_state['generated']:
-    for i in range(len(st.session_state['generated'])-1, -1, -1):
-        message = st.session_state['generated'][i]  
-        st.write("Bot:", message)
-
-
-key = os.environ.get('key')
-secret  = os.environ.get('secret')
-
-session = boto3.Session(
-    aws_access_key_id=key,
-    aws_secret_access_key=secret,
-    region_name = 'us-west-2'
-)
-
-
-
 def query(payload):
     runtime = session.client('runtime.sagemaker')
     response = runtime.invoke_endpoint(
@@ -140,6 +116,35 @@ def generate_response(prompt):
     response = query(json.dumps(payload))
     return response[0]["generated_text"]
 
+user_input = get_text()
+
+if user_input:
+    prompt = bio + " " + res + " " + user_input
+    output = generate_response(prompt) 
+    st.session_state.past.append(user_input)
+    st.session_state.generated.append(output)
+
+    
+if st.session_state['generated']:
+    for i in range(len(st.session_state['generated'])-1, -1, -1):
+        message = st.session_state['generated'][i]  
+        st.write("Bot:", message)
+
+
+
+
+
+key = os.environ.get('key')
+secret  = os.environ.get('secret')
+
+session = boto3.Session(
+    aws_access_key_id=key,
+    aws_secret_access_key=secret,
+    region_name = 'us-west-2'
+)
+
+
+
 # if 'input' not in st.session_state:
 #     st.session_state['input'] = '' 
 
@@ -154,11 +159,11 @@ res = res['matches']
 res = [x['metadata']['text'] for x in res if x['score'] > 0.5]
 res = ' '.join(res)
 
-if prompt:
-    prompt = bio + ' ' + res + ' ' + prompt
-    output = generate_response(prompt)
-    st.session_state.past.append(st.session_state.input)
-    st.session_state.generated.append(output)
+# if prompt:
+#     prompt = bio + ' ' + res + ' ' + prompt
+#     output = generate_response(prompt)
+#     st.session_state.past.append(st.session_state.input)
+#     st.session_state.generated.append(output)
 
 # if st.session_state['generated']:
 #     for i in range(len(st.session_state['generated'])-1, -1, -1):

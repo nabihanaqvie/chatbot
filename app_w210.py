@@ -95,6 +95,16 @@ if 'generated' not in st.session_state:
 if 'past' not in st.session_state:
     st.session_state['past'] = []
 
+key = os.environ.get('key')
+secret  = os.environ.get('secret')
+
+session = boto3.Session(
+    aws_access_key_id=key,
+    aws_secret_access_key=secret,
+    region_name = 'us-west-2'
+)
+
+
 def get_text(): 
     input_text = st.text_input("You: ","Hello", key="input")
     return input_text 
@@ -146,14 +156,6 @@ if st.session_state['generated']:
 
 
 
-key = os.environ.get('key')
-secret  = os.environ.get('secret')
-
-session = boto3.Session(
-    aws_access_key_id=key,
-    aws_secret_access_key=secret,
-    region_name = 'us-west-2'
-)
 
 
 

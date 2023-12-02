@@ -95,6 +95,22 @@ if 'generated' not in st.session_state:
 if 'past' not in st.session_state:
     st.session_state['past'] = []
 
+def get_text(): 
+    input_text = st.text_input("You: ","Hello", key="input")
+    return input_text 
+
+user_input = get_text()
+
+if user_input:
+    output = generate_response(user_input) 
+    st.session_state.past.append(user_input)
+    st.session_state.generated.append(output)
+
+if st.session_state['generated']:
+    for i in range(len(st.session_state['generated'])-1, -1, -1):
+        message = st.session_state['generated'][i]  
+        st.write("Bot:", message)
+
 
 key = os.environ.get('key')
 secret  = os.environ.get('secret')
@@ -124,10 +140,10 @@ def generate_response(prompt):
     response = query(json.dumps(payload))
     return response[0]["generated_text"]
 
-if 'input' not in st.session_state:
-    st.session_state['input'] = '' 
+# if 'input' not in st.session_state:
+#     st.session_state['input'] = '' 
 
-prompt = st.text_input("You: ", st.session_state['input'], key='input')
+# prompt = st.text_input("You: ", st.session_state['input'], key='input')
 
 # Retrieve the answer from pinecone db
 query_vec = embed_docs(prompt)
@@ -144,8 +160,8 @@ if prompt:
     st.session_state.past.append(st.session_state.input)
     st.session_state.generated.append(output)
 
-if st.session_state['generated']:
-    for i in range(len(st.session_state['generated'])-1, -1, -1):
-        message = st.session_state['generated'][i] 
-        st.write("NPC:", message)
+# if st.session_state['generated']:
+#     for i in range(len(st.session_state['generated'])-1, -1, -1):
+#         message = st.session_state['generated'][i] 
+#         st.write("NPC:", message)
 

@@ -116,15 +116,27 @@ def generate_response(prompt):
     response = query(json.dumps(payload))
     return response[0]["generated_text"]
 
+def get_previous_responses(user_input):
+
+    query_vec = embed_docs(user_input)
+    
+    res = index.query(query_vec, top_k=5, include_metadata=True)
+    res = res['matches']
+    res = [x['metadata']['text'] for x in res if x['score'] > 0.5]
+    res = ' '.join(res)
+    
+    return res
+
 user_input = get_text()
 
 if user_input:
-    prompt = bio + " " + res + " " + user_input
-    output = generate_response(prompt) 
+    previous_res = get_previous_responses(user_input)
+    prompt = bio + " " + previous_res + " " + user_input
+    output = generate_response(prompt)
     st.session_state.past.append(user_input)
     st.session_state.generated.append(output)
 
-    
+
 if st.session_state['generated']:
     for i in range(len(st.session_state['generated'])-1, -1, -1):
         message = st.session_state['generated'][i]  
@@ -154,10 +166,10 @@ session = boto3.Session(
 query_vec = embed_docs(prompt)
 
 # get the answer using RAG
-res = index.query(query_vec, top_k=5, include_metadata=True)
-res = res['matches']
-res = [x['metadata']['text'] for x in res if x['score'] > 0.5]
-res = ' '.join(res)
+# res = index.query(query_vec, top_k=5, include_metadata=True)
+# res = res['matches']
+# res = [x['metadata']['text'] for x in res if x['score'] > 0.5]
+# res = ' '.join(res)
 
 # if prompt:
 #     prompt = bio + ' ' + res + ' ' + prompt

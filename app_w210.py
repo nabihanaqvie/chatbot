@@ -11,6 +11,17 @@ import pinecone
 from datasets import load_dataset
 import pandas as pd
 
+
+if 'generated' not in st.session_state: 
+    st.session_state['generated'] = []
+
+if 'past' not in st.session_state:
+    st.session_state['past'] = []
+
+
+
+
+
 endpoint_name = "huggingface-pytorch-tgi-inference-2023-11-21-00-38-12-570" 
 st.sidebar.image("berkeley1.png", width=300)
 st.sidebar.markdown("""<div style="text-align:center;">""", unsafe_allow_html=True) 
@@ -89,12 +100,6 @@ with col2:
 # Once the character is selected, get the bio
 bio = list(character_level_dataset[character_level_dataset['name'] == character]['bio'])[0]
 
-if 'past' not in st.session_state: 
-    st.session_state['past'] = []
-
-if 'responses' not in st.session_state:
-    st.session_state['responses'] = []
-
 key = os.environ.get('key')
 secret  = os.environ.get('secret')
 
@@ -103,6 +108,8 @@ session = boto3.Session(
     aws_secret_access_key=secret,
     region_name = 'us-west-2'
 )
+
+
 
 
 def get_text(): 

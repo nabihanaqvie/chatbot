@@ -177,14 +177,9 @@ if user_input:
 # Display chat history
 for i in range(len(st.session_state['past']) - 1, -1, -1):
     msg_type, msg = st.session_state['past'][i]
-    st.write(f"{msg_type}:", msg)
-
-# Display generated response on top of the input bar
-if st.session_state['generated']:
-    for i in range(len(st.session_state['generated']) - 1, -1, -1):
-        character_name, output = st.session_state['generated'][i]
-        st.write(f"{character_name}:", output)
-
+    character_name, response = st.session_state['generated'][i]
+    st.write(f"{msg_type}: {msg}")
+    st.write(f"{character_name}: {response}")
 
 
 # if user_input:

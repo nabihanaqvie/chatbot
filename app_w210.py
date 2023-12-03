@@ -181,7 +181,7 @@ for i in range(len(st.session_state['past']) - 2, -1, -2):
     st.write(f"{msg_type}:", msg)
 
 # Display user input text bar at the bottom
-st.text_input("You:", user_input, key="input")
+st.text_input("You:", value=user_input)
 
 
 

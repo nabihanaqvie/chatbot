@@ -168,20 +168,38 @@ if user_input:
     previous_res = get_previous_responses(user_input)
     prompt = bio + " " + previous_res + " " + user_input
     output = generate_response(prompt)
-    st.session_state.past.append(("Bot:", output))
-    st.session_state.past.append(("You:", user_input))
-
-# Display generated response on top of the input bar
-if st.session_state['generated']:
-    for i in range(len(st.session_state['generated']) - 1, -1, -1):
-        message = st.session_state['generated'][i]
-        st.write("Bot:", message)
+    
+    # Extract character's name from the bio
+    character_name = character_level_dataset[character_level_dataset['bio'] == bio]['name'].iloc[0]
+    
+    st.session_state.past.append((character_name, "You", user_input))
+    st.session_state.past.append((character_name, "Bot", output))
 
 # Display chat history
-# Display chat history
-for i in range(len(st.session_state['past']) - 1, -1, -2):
-    msg_type, msg = st.session_state['past'][i - 1], st.session_state['past'][i]
-    st.write(msg_type, msg)
+for i in range(len(st.session_state['past']) - 1, -1, -3):
+    character, msg_type, msg = st.session_state['past'][i - 2], st.session_state['past'][i - 1], st.session_state['past'][i]
+    st.write(f"{character}:\n{msg_type}: {msg}")
+
+
+
+# if user_input:
+#     previous_res = get_previous_responses(user_input)
+#     prompt = bio + " " + previous_res + " " + user_input
+#     output = generate_response(prompt)
+#     st.session_state.past.append(("Bot:", output))
+#     st.session_state.past.append(("You:", user_input))
+
+# # Display generated response on top of the input bar
+# if st.session_state['generated']:
+#     for i in range(len(st.session_state['generated']) - 1, -1, -1):
+#         message = st.session_state['generated'][i]
+#         st.write("Bot:", message)
+
+# # Display chat history
+# # Display chat history
+# for i in range(len(st.session_state['past']) - 1, -1, -2):
+#     msg_type, msg = st.session_state['past'][i - 1], st.session_state['past'][i]
+#     st.write(msg_type, msg)
 # if 'input' not in st.session_state:
 #     st.session_state['input'] = '' 
 

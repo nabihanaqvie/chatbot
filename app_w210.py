@@ -164,6 +164,9 @@ def get_previous_responses(user_input):
 # Input bar at the bottom
 user_input = get_text()
 
+# Extract character's name from the bio outside of the if block
+character_name = list(character_level_dataset[character_level_dataset['name'] == character]['name'])[0]
+
 if user_input:
     previous_res = get_previous_responses(user_input)
     prompt = bio + " " + previous_res + " " + user_input

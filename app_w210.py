@@ -137,7 +137,7 @@ def get_previous_responses(user_input):
     
     return res
 
-user_input = get_text()
+# user_input = get_text()
 
 # if user_input:
 #     previous_res = get_previous_responses(user_input)
@@ -154,15 +154,8 @@ user_input = get_text()
 
 
 
-# Display chat history
-for i in range(len(st.session_state['responses'])-1, -1, -1):
-   msg = st.session_state['past'][i]
-   resp = st.session_state['responses'][i]
-   st.write(msg, resp)
-
-
 # Input bar at the bottom
-user_input = st.text_input("You: ", "Hello", key="input")
+user_input = get_text()
 
 if user_input:
     previous_res = get_previous_responses(user_input)
@@ -171,9 +164,17 @@ if user_input:
     st.session_state.past.append(user_input)
     st.session_state.generated.append(output)
 
-    # Display generated response on top of the input bar
-    st.write("Bot:", output)
+# Display generated response on top of the input bar
+if st.session_state['generated']:
+    for i in range(len(st.session_state['generated']) - 1, -1, -1):
+        message = st.session_state['generated'][i]
+        st.write("Bot:", message)
 
+# Display chat history
+for i in range(len(st.session_state['responses']) - 1, -1, -1):
+    msg = st.session_state['past'][i]
+    resp = st.session_state['responses'][i]
+    st.write(msg, resp)
 # if 'input' not in st.session_state:
 #     st.session_state['input'] = '' 
 

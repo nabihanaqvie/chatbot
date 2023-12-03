@@ -172,16 +172,16 @@ if user_input:
     prompt = bio + " " + previous_res + " " + user_input
     output = generate_response(prompt)
     
-    # Display user input
-    st.write("You:", user_input)
-    
-    # Display bot response
+    # Display bot response above input bar
     st.write(f"{character_name}:", output)
 
 # Display chat history
 for i in range(len(st.session_state['past']) - 2, -1, -2):
     msg_type, msg = st.session_state['past'][i], st.session_state['past'][i - 1]
     st.write(f"{msg_type}:", msg)
+
+# Display user input text bar at the bottom
+st.text_input("You:", user_input, key="input")
 
 
 

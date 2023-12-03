@@ -139,18 +139,18 @@ def get_previous_responses(user_input):
 
 user_input = get_text()
 
-if user_input:
-    previous_res = get_previous_responses(user_input)
-    prompt = bio + " " + previous_res + " " + user_input
-    output = generate_response(prompt)
-    st.session_state.past.append(user_input)
-    st.session_state.generated.append(output)
+# if user_input:
+#     previous_res = get_previous_responses(user_input)
+#     prompt = bio + " " + previous_res + " " + user_input
+#     output = generate_response(prompt)
+#     st.session_state.past.append(user_input)
+#     st.session_state.generated.append(output)
 
 
-if st.session_state['generated']:
-    for i in range(len(st.session_state['generated'])-1, -1, -1):
-        message = st.session_state['generated'][i]  
-        st.write("Bot:", message)
+# if st.session_state['generated']:
+#     for i in range(len(st.session_state['generated'])-1, -1, -1):
+#         message = st.session_state['generated'][i]  
+#         st.write("Bot:", message)
 
 
 

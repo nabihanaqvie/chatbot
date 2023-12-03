@@ -161,7 +161,18 @@ for i in range(len(st.session_state['responses'])-1, -1, -1):
    st.write(msg, resp)
 
 
+# Input bar at the bottom
+user_input = st.text_input("You: ", "Hello", key="input")
 
+if user_input:
+    previous_res = get_previous_responses(user_input)
+    prompt = bio + " " + previous_res + " " + user_input
+    output = generate_response(prompt)
+    st.session_state.past.append(user_input)
+    st.session_state.generated.append(output)
+
+    # Display generated response on top of the input bar
+    st.write("Bot:", output)
 
 # if 'input' not in st.session_state:
 #     st.session_state['input'] = '' 

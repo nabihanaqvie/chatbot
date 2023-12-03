@@ -18,7 +18,10 @@ if 'generated' not in st.session_state:
 if 'past' not in st.session_state:
     st.session_state['past'] = []
 
-
+if character != st.session_state.get("current_character"):
+    st.session_state['generated'] = []
+    st.session_state['past'] = []
+    st.session_state["current_character"] = character
 
 
 
@@ -144,21 +147,6 @@ def get_previous_responses(user_input):
     
     return res
 
-# user_input = get_text()
-
-# if user_input:
-#     previous_res = get_previous_responses(user_input)
-#     prompt = bio + " " + previous_res + " " + user_input
-#     output = generate_response(prompt)
-#     st.session_state.past.append(user_input)
-#     st.session_state.generated.append(output)
-
-
-# if st.session_state['generated']:
-#     for i in range(len(st.session_state['generated'])-1, -1, -1):
-#         message = st.session_state['generated'][i]  
-#         st.write("Bot:", message)
-
 
 
 # Input bar at the bottom
@@ -181,47 +169,4 @@ for i in range(len(st.session_state['past']) - 1, -1, -1):
     st.write(f"{msg_type}: {msg}")
     st.write(f"{character_name}: {response}")
 
-
-# if user_input:
-#     previous_res = get_previous_responses(user_input)
-#     prompt = bio + " " + previous_res + " " + user_input
-#     output = generate_response(prompt)
-#     st.session_state.past.append(("Bot:", output))
-#     st.session_state.past.append(("You:", user_input))
-
-# # Display generated response on top of the input bar
-# if st.session_state['generated']:
-#     for i in range(len(st.session_state['generated']) - 1, -1, -1):
-#         message = st.session_state['generated'][i]
-#         st.write("Bot:", message)
-
-# # Display chat history
-# # Display chat history
-# for i in range(len(st.session_state['past']) - 1, -1, -2):
-#     msg_type, msg = st.session_state['past'][i - 1], st.session_state['past'][i]
-#     st.write(msg_type, msg)
-# if 'input' not in st.session_state:
-#     st.session_state['input'] = '' 
-
-# prompt = st.text_input("You: ", st.session_state['input'], key='input')
-
-# Retrieve the answer from pinecone db
-# query_vec = embed_docs(prompt)
-
-# get the answer using RAG
-# res = index.query(query_vec, top_k=5, include_metadata=True)
-# res = res['matches']
-# res = [x['metadata']['text'] for x in res if x['score'] > 0.5]
-# res = ' '.join(res)
-
-# if prompt:
-#     prompt = bio + ' ' + res + ' ' + prompt
-#     output = generate_response(prompt)
-#     st.session_state.past.append(st.session_state.input)
-#     st.session_state.generated.append(output)
-
-# if st.session_state['generated']:
-#     for i in range(len(st.session_state['generated'])-1, -1, -1):
-#         message = st.session_state['generated'][i] 
-#         st.write("NPC:", message)
 

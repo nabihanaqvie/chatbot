@@ -171,17 +171,19 @@ if user_input:
     previous_res = get_previous_responses(user_input)
     prompt = bio + " " + previous_res + " " + user_input
     output = generate_response(prompt)
-    
-    # Display user input
-    st.write(f"You: {user_input}")
-    
-    # Display bot response
-    st.write(f"{character_name}:", output)
+    st.session_state.past.append(("You", user_input))
+    st.session_state.generated.append((character, output))
 
 # Display chat history
-for i in range(len(st.session_state['past']) - 2, -1, -2):
-    msg_type, msg = st.session_state['past'][i], st.session_state['past'][i - 1]
+for i in range(len(st.session_state['past']) - 1, -1, -1):
+    msg_type, msg = st.session_state['past'][i]
     st.write(f"{msg_type}:", msg)
+
+# Display generated response on top of the input bar
+if st.session_state['generated']:
+    for i in range(len(st.session_state['generated']) - 1, -1, -1):
+        character_name, output = st.session_state['generated'][i]
+        st.write(f"{character_name}:", output)
 
 
 

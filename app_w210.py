@@ -169,16 +169,16 @@ if user_input:
     prompt = bio + " " + previous_res + " " + user_input
     output = generate_response(prompt)
     
-    # Extract character's name from the bio
-    character_name = character_level_dataset[character_level_dataset['bio'] == bio]['name'].iloc[0]
+    # Display user input
+    st.write("You:", user_input)
     
-    st.session_state.past.append((character_name, "You", user_input))
-    st.session_state.past.append((character_name, "Bot", output))
+    # Display bot response
+    st.write(f"{character_name}:", output)
 
 # Display chat history
-for i in range(len(st.session_state['past']) - 1, -1, -3):
-    character, msg_type, msg = st.session_state['past'][i - 2], st.session_state['past'][i - 1], st.session_state['past'][i]
-    st.write(f"{character}:\n{msg_type}: {msg}")
+for i in range(len(st.session_state['past']) - 2, -1, -2):
+    msg_type, msg = st.session_state['past'][i], st.session_state['past'][i - 1]
+    st.write(f"{msg_type}:", msg)
 
 
 

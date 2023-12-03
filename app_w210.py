@@ -12,16 +12,7 @@ from datasets import load_dataset
 import pandas as pd
 
 
-if 'generated' not in st.session_state: 
-    st.session_state['generated'] = []
 
-if 'past' not in st.session_state:
-    st.session_state['past'] = []
-
-if character != st.session_state.get("current_character"):
-    st.session_state['generated'] = []
-    st.session_state['past'] = []
-    st.session_state["current_character"] = character
 
 
 
@@ -112,7 +103,16 @@ session = boto3.Session(
     region_name = 'us-west-2'
 )
 
+if 'generated' not in st.session_state: 
+    st.session_state['generated'] = []
 
+if 'past' not in st.session_state:
+    st.session_state['past'] = []
+
+if character != st.session_state.get("current_character"):
+    st.session_state['generated'] = []
+    st.session_state['past'] = []
+    st.session_state["current_character"] = character
 
 
 def get_text(): 

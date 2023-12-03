@@ -168,8 +168,8 @@ if user_input:
     previous_res = get_previous_responses(user_input)
     prompt = bio + " " + previous_res + " " + user_input
     output = generate_response(prompt)
-    st.session_state.past.append(user_input)
-    st.session_state.generated.append(output)
+    st.session_state.past.append(("Bot:", output))
+    st.session_state.past.append(("You:", user_input))
 
 # Display generated response on top of the input bar
 if st.session_state['generated']:
@@ -178,11 +178,10 @@ if st.session_state['generated']:
         st.write("Bot:", message)
 
 # Display chat history
-for i in range(len(st.session_state['responses']) - 1, -1, -1):
-    msg = st.session_state['past'][i]
-    resp = st.session_state['responses'][i]
-    st.write("You:", msg)
-    st.write("Bot:", resp)
+# Display chat history
+for i in range(len(st.session_state['past']) - 1, -1, -2):
+    msg_type, msg = st.session_state['past'][i - 1], st.session_state['past'][i]
+    st.write(msg_type, msg)
 # if 'input' not in st.session_state:
 #     st.session_state['input'] = '' 
 

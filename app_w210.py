@@ -181,7 +181,8 @@ if st.session_state['generated']:
 for i in range(len(st.session_state['responses']) - 1, -1, -1):
     msg = st.session_state['past'][i]
     resp = st.session_state['responses'][i]
-    st.write(msg, resp)
+    st.write("You:", msg)
+    st.write("Bot:", resp)
 # if 'input' not in st.session_state:
 #     st.session_state['input'] = '' 
 

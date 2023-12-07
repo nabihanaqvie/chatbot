@@ -17,3 +17,5 @@ pinecone-client
 datasets  
 
 pandas
+
+transformers

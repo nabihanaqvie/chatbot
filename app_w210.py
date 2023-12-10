@@ -161,7 +161,7 @@ user_input = get_text()
 character_name = list(character_level_dataset[character_level_dataset['name'] == character]['name'])[0]
 
 if user_input:
-    prompt = bio + " " + previous_res + " " + user_input
+    prompt = bio + " " + user_input
     d_output = generate_dialog_studio_response(prompt)
     l_output = generate_llama2_response(prompt)
     st.session_state.past.append(("You", user_input))

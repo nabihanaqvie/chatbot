@@ -5,7 +5,6 @@ import json
 import os
 from typing import List
 from sentence_transformers import SentenceTransformer
-from transformers import pipeline
 import torch
 import numpy as np
 import pinecone
@@ -17,8 +16,9 @@ import pandas as pd
 
 
 
-#endpoint_name = "huggingface-pytorch-tgi-inference-2023-11-21-00-38-12-570"
-dialog_studio_pipe = pipeline("text2text-generation", model="Himabindu/finetuned-t5-dialogstudio-npc", max_new_tokens=250)
+dialog_studio_endpoint_name = "huggingface-pytorch-tgi-inference-2023-12-10-19-14-16-205"
+llama_endpoint_name = "huggingface-pytorch-tgi-inference-2023-12-10-19-19-20-034"
+
 st.sidebar.image("berkeley1.png", width=300)
 st.sidebar.markdown("""<div style="text-align:center;">""", unsafe_allow_html=True) 
 st.sidebar.title("W210 - Capstone")
@@ -121,26 +121,30 @@ def get_text():
     input_text = st.text_input("You: ","Hello", key="input")
     return input_text 
 
-#def query(payload):
-    #runtime = session.client('runtime.sagemaker')
-    #response = runtime.invoke_endpoint(
-        #EndpointName=endpoint_name,
-        #ContentType='application/json',
-        #Body=payload)
-    #result = json.loads(response['Body'].read().decode())
-    #return result
+def query(payload, endpoint_name):
+    runtime = session.client('runtime.sagemaker')
+    response = runtime.invoke_endpoint(
+        EndpointName=endpoint_name,
+        ContentType='application/json',
+        Body=payload)
+    result = json.loads(response['Body'].read().decode())
+    return result
 
-#def generate_response(prompt):
-    #payload = {
-        #"inputs": prompt
-    #}
+def generate_dialog_studio_response(prompt):
+    payload = {
+        "inputs": prompt
+    }
 
-    #response = query(json.dumps(payload))
-    #return response[0]["generated_text"]
-    
-def generate_dialog_studio_response(input):
-    return dialog_studio_pipe(input)[0]['generated_text']
+    response = query(json.dumps(payload), dialog_studio_endpoint_name)
+    return response[0]["generated_text"]
 
+def generate_llama2_response(prompt):
+    payload = {
+        "inputs": prompt
+    }
+
+    response = query(json.dumps(payload), llama_endpoint_name)
+    return response[0]["generated_text"]
 
 def get_previous_responses(user_input):
 
@@ -164,9 +168,11 @@ character_name = list(character_level_dataset[character_level_dataset['name'] ==
 if user_input:
     previous_res = get_previous_responses(user_input)
     prompt = bio + " " + previous_res + " " + user_input
-    output = generate_dialog_studio_response(prompt)
+    d_output = generate_dialog_studio_response(prompt)
+    l_output = generate_llama2_response(prompt)
     st.session_state.past.append(("You", user_input))
-    st.session_state.generated.append((character, output))
+    st.session_state.generated.append((character + ' dialogstudio', d_output))
+    st.session_state_generated.append((character+ ' llama2', l_output))
 
 # Display chat history
 for i in range(len(st.session_state['past']) - 1, -1, -1):

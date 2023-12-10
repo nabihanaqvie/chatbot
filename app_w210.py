@@ -11,11 +11,6 @@ import pinecone
 from datasets import load_dataset
 import pandas as pd
 
-
-
-
-
-
 dialog_studio_endpoint_name = "huggingface-pytorch-tgi-inference-2023-12-10-19-14-16-205"
 llama_endpoint_name = "huggingface-pytorch-tgi-inference-2023-12-10-19-19-20-034"
 
@@ -166,13 +161,12 @@ user_input = get_text()
 character_name = list(character_level_dataset[character_level_dataset['name'] == character]['name'])[0]
 
 if user_input:
-    previous_res = get_previous_responses(user_input)
     prompt = bio + " " + previous_res + " " + user_input
     d_output = generate_dialog_studio_response(prompt)
     l_output = generate_llama2_response(prompt)
     st.session_state.past.append(("You", user_input))
     st.session_state.generated.append((character + ' dialogstudio', d_output))
-    st.session_state_generated.append((character+ ' llama2', l_output))
+    st.session_state.generated.append((character+ ' llama2', l_output))
 
 # Display chat history
 for i in range(len(st.session_state['past']) - 1, -1, -1):

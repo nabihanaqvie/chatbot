@@ -141,9 +141,7 @@ def generate_llama2_response(prompt):
     response = query(json.dumps(payload), llama_endpoint_name)
     return response[0]["generated_text"]
 
-def get_previous_responses(user_input):
-
-    query_vec = embed_docs(user_input)
+def get_rag_responses(query_vec):
     
     res = index.query(query_vec, top_k=5, include_metadata=True)
     res = res['matches']
@@ -151,7 +149,14 @@ def get_previous_responses(user_input):
     res = ' '.join(res)
     
     return res
-
+    
+def get_bio_responses(query_vec):
+    bio_vec = embed_docs(bio)
+    # Code source: https://www.geeksforgeeks.org/how-to-calculate-cosine-similarity-in-python/
+    a = np.array(query_vec)
+    b = np.array(bio_vec)
+    cosine_similarity = np.dot(a,b)/(norm(a)*norm(b))
+    return cosine_similarity
 
 
 # Input bar at the bottom
@@ -160,13 +165,18 @@ user_input = get_text()
 # Extract character's name from the bio outside of the if block
 character_name = list(character_level_dataset[character_level_dataset['name'] == character]['name'])[0]
 
+
 if user_input:
-    prompt = bio + " " + user_input
-    d_output = generate_dialog_studio_response(prompt)
-    l_output = generate_llama2_response(prompt)
+    query_vec = embed_docs(user_input)
+    prompt = character + " " + bio + " " + user_input
+    rag_results = get_rag_responses(prompt)
+    if len(rag_results) > 1 or get_bio_responses(query_vec) > 0.5:
+        prompt = prompt + " " + rag_results
+        output = generate_llama2_response(prompt)
+    else:
+        output = generate_dialog_studio_response(prompt)
     st.session_state.past.append(("You", user_input))
-    st.session_state.generated.append((character + ' dialogstudio', d_output))
-    st.session_state.generated.append((character+ ' llama2', l_output))
+    st.session_state.generated.append((character + ': ', output))
 
 # Display chat history
 for i in range(len(st.session_state['past']) - 1, -1, -1):

@@ -154,7 +154,7 @@ def generate_llama2_response(prompt, character, bio):
     response = query(json.dumps(payload), llama_endpoint_name)
     
     full_response = response[0]["generated_text"]
-    full_response = full_response.split('### Response')[1]
+    full_response = full_response.split('\n\n### Response:\n')[1]
     return full_response
 
 def get_rag_responses(query_vec):
@@ -188,7 +188,6 @@ if user_input:
     if len(rag_results) > 1 or get_bio_responses(query_vec) > 0.5:
         bio = bio + " " + rag_results
         output = generate_llama2_response(user_input, character, bio)
-        print(output)
     else:
         output = generate_dialog_studio_response(character + " " + bio + " " + user_input)
     st.session_state.past.append(("You", user_input))

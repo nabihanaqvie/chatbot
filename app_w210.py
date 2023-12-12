@@ -202,15 +202,18 @@ def get_bio_responses(query_vec):
     bio_vec = embed_docs(bio)
     # Code source: https://www.geeksforgeeks.org/how-to-calculate-cosine-similarity-in-python/
     a = np.array(query_vec)
-    b = np.array(bio_vec)
-    cosine_similarity = np.dot(a,b)/(norm(a)*norm(b))
-    return cosine_similarity
+    bios = bio.split('. ')
+    bio_vecs = [embed_docs[x] for x in bios]
+    cosines = [np.dot(a,b)/(norm(a)*norm(b)) for b in bio_vecs]
+    cosines = [value for value in cosines if value > 0.5]
+    return cosines
 
 
 if user_input:
     query_vec = embed_docs(user_input)
     rag_results = get_rag_responses(query_vec)
-    if len(rag_results) > 1 or get_bio_responses(query_vec) > 0.5:
+    bio_responses = get_bio_responses(query_vec)
+    if len(rag_results) > 1 or len(bio_responses) > 0:
         bio = bio + " " + rag_results
         print("we're in llama land")
         output = generate_llama2_response(user_input, character, bio)

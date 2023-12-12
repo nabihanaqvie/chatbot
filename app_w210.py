@@ -187,6 +187,7 @@ if user_input:
     rag_results = get_rag_responses(query_vec)
     if len(rag_results) > 1 or get_bio_responses(query_vec) > 0.5:
         bio = bio + " " + rag_results
+        print("we're in llama land")
         output = generate_llama2_response(user_input, character, bio)
     else:
         output = generate_dialog_studio_response(character + " " + bio + " " + user_input)

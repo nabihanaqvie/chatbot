@@ -134,12 +134,25 @@ def generate_dialog_studio_response(prompt):
     response = query(json.dumps(payload), dialog_studio_endpoint_name)
     return response[0]["generated_text"]
 
-def generate_llama2_response(prompt):
-    payload = {
-        "inputs": prompt
-    }
+prefix = 'Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.\n\n'
+delimeter = '###'
+instruction = ' Instruction:\n'
+input = ' Input:\n'
+name = 'Name: '
+biography = ', Biography: '
 
+def generate_llama2_response(prompt, character, bio):
+    
+    input = prefix + delimeter + instruction + prompt + '\n\n' + delimeter
+
+    input += name + character + biography + bio + '\n\n' + delimeter
+    
+    payload = {
+        "inputs": input
+    }
+    
     response = query(json.dumps(payload), llama_endpoint_name)
+    
     full_response = response[0]["generated_text"]
     minimal_response = full_response.replace(prompt, '')
     return minimal_response
@@ -171,13 +184,12 @@ character_name = list(character_level_dataset[character_level_dataset['name'] ==
 
 if user_input:
     query_vec = embed_docs(user_input)
-    prompt = character + " " + bio + " " + user_input
     rag_results = get_rag_responses(query_vec)
     if len(rag_results) > 1 or get_bio_responses(query_vec) > 0.5:
-        prompt = prompt + " " + rag_results
-        output = generate_llama2_response(prompt)
+        bio = bio + " " + rag_results
+        output = generate_llama2_response(user_input, character, bio)
     else:
-        output = generate_dialog_studio_response(prompt)
+        output = generate_dialog_studio_response(character + " " + bio + " " + user_input)
     st.session_state.past.append(("You", user_input))
     st.session_state.generated.append((character, output))
 

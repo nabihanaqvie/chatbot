@@ -140,7 +140,9 @@ def generate_llama2_response(prompt):
     }
 
     response = query(json.dumps(payload), llama_endpoint_name)
-    return response[0]["generated_text"]
+    full_response = response[0]["generated_text"]
+    minimal_response = full_response.replace(prompt, '')
+    return minimal_response
 
 def get_rag_responses(query_vec):
     

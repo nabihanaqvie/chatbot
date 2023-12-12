@@ -203,7 +203,7 @@ def get_bio_responses(query_vec):
     # Code source: https://www.geeksforgeeks.org/how-to-calculate-cosine-similarity-in-python/
     a = np.array(query_vec)
     bios = bio.split('. ')
-    bio_vecs = [embed_docs[x] for x in bios]
+    bio_vecs = [embed_docs(x) for x in bios]
     cosines = [np.dot(a,b)/(norm(a)*norm(b)) for b in bio_vecs]
     cosines = [value for value in cosines if value > 0.5]
     return cosines

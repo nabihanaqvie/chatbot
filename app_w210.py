@@ -186,7 +186,7 @@ def generate_llama2_response(prompt, character, bio):
     response = query(json.dumps(payload), llama_endpoint_name)
     
     full_response = response[0]["generated_text"]
-    full_response = full_response.split('Response:')[1]
+    #full_response = full_response.split('Response:')[1]
     return full_response
 
 def get_rag_responses(query_vec):

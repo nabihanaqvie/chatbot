@@ -164,6 +164,7 @@ def generate_dialog_studio_response(prompt):
     }
 
     response = query(json.dumps(payload), dialog_studio_endpoint_name)
+    response = response.replace(bio, '')
     return response[0]["generated_text"]
 
 def generate_llama2_response(prompt, character, bio):

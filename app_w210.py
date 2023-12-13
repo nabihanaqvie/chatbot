@@ -175,9 +175,7 @@ biography = ', Biography: '
 
 def generate_llama2_response(prompt, character, bio):
     
-    input = prefix + delimeter + instruction + prompt + '\n\n' + delimeter
-
-    input += name + character + biography + bio + '\n\n' + delimeter
+    input = name + ' ' + bio + prompt
     
     payload = {
         "inputs": input
@@ -217,7 +215,6 @@ if user_input:
     bio_responses = get_bio_responses(query_vec)
     if len(rag_results) > 1 or len(bio_responses) > 0:
         bio = bio + " " + rag_results
-        print("we're in llama land")
         output = generate_llama2_response(user_input, character, bio)
     else:
         output = generate_dialog_studio_response(character + " " + bio + " " + user_input)

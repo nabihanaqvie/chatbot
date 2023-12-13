@@ -166,13 +166,6 @@ def generate_dialog_studio_response(prompt):
     response = query(json.dumps(payload), dialog_studio_endpoint_name)
     return response[0]["generated_text"]
 
-prefix = 'Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.\n\n'
-delimeter = '###'
-instruction = ' Instruction:\n'
-input = ' Input:\n'
-name = 'Name: '
-biography = ', Biography: '
-
 def generate_llama2_response(prompt, character, bio):
     
     input = name + ' ' + bio + prompt

@@ -204,7 +204,7 @@ def get_bio_responses(query_vec):
     cosines = [value for value in cosines if value > 0.5]
     return cosines
 
-if choice != 'Choose an existing character':
+if choice == 'Choose an existing character':
     if user_input:
         query_vec = embed_docs(user_input)
         rag_results = get_rag_responses(query_vec)

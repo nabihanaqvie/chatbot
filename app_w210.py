@@ -13,7 +13,7 @@ import pandas as pd
 from numpy.linalg import norm
 
 dialog_studio_endpoint_name = "huggingface-pytorch-tgi-inference-2023-12-10-19-14-16-205"
-llama_endpoint_name = "huggingface-pytorch-tgi-inference-2023-12-10-19-19-20-034"
+llama_endpoint_name = "huggingface-pytorch-tgi-inference-2023-12-13-00-33-22-752"
 
 st.sidebar.image("berkeley1.png", width=300)
 st.sidebar.markdown("""<div style="text-align:center;">""", unsafe_allow_html=True) 
@@ -205,7 +205,8 @@ def get_bio_responses(query_vec):
     bios = bio.split('. ')
     bio_vecs = [embed_docs(x) for x in bios]
     cosines = [np.dot(a,b)/(norm(a)*norm(b)) for b in bio_vecs]
-    #cosines = [value for value in cosines if value > 0.5]
+    print(cosines)
+    cosines = [value for value in cosines if value > 0.5]
     return cosines
 
 

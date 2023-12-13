@@ -174,10 +174,14 @@ def generate_llama2_response(prompt, character, bio):
         "inputs": input
     }
     
+    print(input)
+    
     response = query(json.dumps(payload), llama_endpoint_name)
     
     full_response = response[0]["generated_text"]
     llama_response = full_response.split(prompt)[1]
+    # take only first sentence
+    llama_response = llama_response.split('.')[0]
     return llama_response
 
 def get_rag_responses(query_vec):

@@ -204,19 +204,28 @@ def get_bio_responses(query_vec):
     cosines = [value for value in cosines if value > 0.5]
     return cosines
 
-
-if user_input:
-    query_vec = embed_docs(user_input)
-    rag_results = get_rag_responses(query_vec)
-    print(get_bio_responses(query_vec))
-    bio_responses = get_bio_responses(query_vec)
-    if len(rag_results) > 1 or len(bio_responses) > 0:
-        bio = bio + " " + rag_results
+if choice != 'Choose an existing character':
+    if user_input:
+        query_vec = embed_docs(user_input)
+        rag_results = get_rag_responses(query_vec)
+        print(get_bio_responses(query_vec))
+        bio_responses = get_bio_responses(query_vec)
+        if len(rag_results) > 1 or len(bio_responses) > 0:
+            bio = bio + " " + rag_results
+            output = generate_llama2_response(user_input, character, bio)
+        else:
+            output = generate_dialog_studio_response(character + " " + bio + " " + user_input)
+        st.session_state.past.append(("You", user_input))
+        st.session_state.generated.append((character, output))
+else:
+    if user_input:
+        query_vec = embed_docs(user_input)
+        rag_results = get_rag_responses(query_vec)
+        if len(rag_results) > 1:
+            bio = bio + " " + rag_results
         output = generate_llama2_response(user_input, character, bio)
-    else:
-        output = generate_dialog_studio_response(character + " " + bio + " " + user_input)
-    st.session_state.past.append(("You", user_input))
-    st.session_state.generated.append((character, output))
+        st.session_state.past.append(("You", user_input))
+        st.session_state.generated.append((character, output))
 
 # Display chat history
 for i in range(len(st.session_state['past']) - 1, -1, -1):

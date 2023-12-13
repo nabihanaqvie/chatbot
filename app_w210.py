@@ -168,7 +168,7 @@ def generate_dialog_studio_response(prompt):
 
 def generate_llama2_response(prompt, character, bio):
     
-    input = name + ' ' + bio + prompt
+    input = character + ' ' + bio + ' ' + prompt
     
     payload = {
         "inputs": input

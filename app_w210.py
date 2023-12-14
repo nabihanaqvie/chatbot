@@ -114,7 +114,7 @@ if choice == 'Choose an existing character':
     # Create character dropdown
     with col2:
         st.markdown("<div style='padding-top:30px'></div>", unsafe_allow_html=True)
-        st.title("Team NPC")
+        st.title("NPChat")
         character = st.selectbox("Choose a character",
                              character_names)
                              
@@ -146,7 +146,7 @@ else:
     # Inputs - character name and bio
     with col2:
         st.markdown("<div style='padding-top:30px'></div>", unsafe_allow_html=True)
-        st.title("Team NPC")
+        st.title("NPChat")
         character = create_character_name()
         bio = create_bio()
 
